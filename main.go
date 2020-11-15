@@ -10,6 +10,11 @@ import (
 	"time"
 )
 
+var text = [...]string{"A persistência é o caminho do êxito.", "No meio da dificuldade encontra-se a oportunidade.",
+	"Eu faço da dificuldade a minha motivação. A volta por cima vem na continuação.",
+	"Pedras no caminho? Eu guardo todas. Um dia vou construir um castelo.",
+	"podem me atacar com paus e pedras, os paus eu chupo as pedra eu fumo."}
+
 var (
 	offset      uint32
 	filePointer *os.File
@@ -31,12 +36,8 @@ func main() {
 	rand.Seed(seed.UnixNano())
 
 	//handlers
-	bot.Handle("/start", func(m *tb.Message) {
-		_, err := bot.Send(m.Sender,
-			"Use the unique command to send you a random thigh picture\n\nAs for now, there's only one command:"+
-				"\n\t/thighs - Send you a thigh pic"+
-				"\n\nhope you like the bot, we'll be trying to improve it as the time passes")
-
+	bot.Handle("/text", func(m *tb.Message) {
+		_, err := bot.Send(m.Chat, getRandomText())
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -44,9 +45,10 @@ func main() {
 
 	wg.Wait()
 
-	bot.Handle("/thighs", func(m *tb.Message) {
+	bot.Handle("/photo", func(m *tb.Message) {
 		p := &tb.Photo{File: tb.FromURL(getRandomLink())}
-		_, err := bot.Send(m.Sender, p)
+		_, err := bot.Send(m.Chat, p)
+
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -100,6 +102,12 @@ func getRandomLink() string {
 	}
 
 	return string(buffer[4:i])
+}
+
+func getRandomText() string {
+	random := rand.Int() % 5
+
+	return text[random]
 }
 
 func MakeBot() *tb.Bot {
