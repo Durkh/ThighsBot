@@ -21,14 +21,15 @@ func main() {
 
 	wg.Add(1)
 
-	//bot set up
-	bot := MakeBot()
 	//file opener
 	go LoadFile(&wg)
 	defer filePointer.Close()
 
+	//bot set up
+	bot := MakeBot()
+
 	seed := time.Now()
-	rand.Seed(seed.UnixNano())
+	go rand.Seed(seed.UnixNano())
 
 	//handlers
 	bot.Handle("/start", func(m *tb.Message) {
