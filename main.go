@@ -33,7 +33,7 @@ func main() {
 
 	//handlers
 	bot.Handle("/start", func(m *tb.Message) {
-		_, err := bot.Send(m.Sender,
+		_, err := bot.Send(m.Chat,
 			"Use the unique command to send you a random thigh picture\n\nAs for now, there's only one command:"+
 				"\n\t/thighs - Send you a thigh pic"+
 				"\n\nhope you like the bot, we'll be trying to improve it as the time passes")
